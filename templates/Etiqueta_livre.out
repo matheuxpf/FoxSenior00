@@ -1,0 +1,12 @@
+^XA
+^FX --- Molde de Etiqueta Livre FoxSenior ---
+^FX Bloco de Texto Livre (Suporta Multiplas Linhas)
+^FO30,50^A0N,40,40^FB700,5,0,L,0^FD#TEXTO^FS
+
+^FX Linha Fixa e Codigo de Barras DESLOCADOS PARA A DIREITA
+^FO80,320^A0N,30,30^FDCodigo EAN:^FS
+^FO80,360^BEN,80,Y,N^FD#D^FS
+
+^FX Controle de Quantidade
+^PQ1,0,0,N
+^XZ

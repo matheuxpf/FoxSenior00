@@ -1,0 +1,28 @@
+[
+  {
+    "id": "1",
+    "nomeProduto": "TESTE",
+    "template": "Etiqueta Martins.out",
+    "variaveisFixas": {
+      "#C": "BASE SALGADINHO",
+      "#E": "SABOR QUEIJO",
+      "#M": "PCT",
+      "#S": "1.000",
+      "#B": "MARCA ELBIS",
+      "#D": "74444"
+    }
+  },
+  {
+    "id": "2",
+    "nomeProduto": "REQUEIJAO TRADICIONAL",
+    "template": "479_2.out",
+    "variaveisFixas": {
+      "#C": "REQUEIJAO TRADICIONAL",
+      "#E": "SABOR REQUEIJAO",
+      "#M": "CXA",
+      "#K": "28.000",
+      "#B": "MARCA ELBIS",
+      "#D": "10103"
+    }
+  }
+]
