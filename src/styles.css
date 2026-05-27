@@ -71,6 +71,22 @@ body {
   border-right: 1px solid var(--border-dark);
   flex-shrink: 0;
   padding: 24px 20px;
+  overflow-y: auto;
+}
+
+/* Custom Scrollbar for sidebar */
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+.sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.sidebar::-webkit-scrollbar-thumb {
+  background: var(--border-dark);
+  border-radius: 3px;
+}
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
 }
 
 /* Sidebar Header */

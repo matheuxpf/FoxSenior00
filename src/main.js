@@ -143,6 +143,13 @@ function setupPrinterStatusListener() {
 // --- INITIALIZATION ---
 async function init() {
   try {
+    // Restaurar preferências do LocalStorage
+    const savedDarkness = localStorage.getItem("foxsenior_darkness");
+    if (savedDarkness) {
+      elements.darknessRange.value = savedDarkness;
+      elements.darknessVal.innerText = savedDarkness;
+    }
+
     // 1. Carregar impressoras
     await carregarImpressoras();
 
@@ -312,26 +319,41 @@ function setupEventListeners() {
   elements.textarea.addEventListener("click", atualizarLinhaAtiva);
   elements.textarea.addEventListener("select", atualizarLinhaAtiva);
 
+  // Helper para aplicar fonte em múltiplas linhas selecionadas
+  const aplicarFonteNasLinhasSelecionadas = (val) => {
+    if (state.fontes.length === 0) return;
+    const start = elements.textarea.selectionStart;
+    const end = elements.textarea.selectionEnd;
+    const text = elements.textarea.value;
+    
+    const linhaInicio = text.substring(0, start).split('\n').length - 1;
+    let linhaFim = text.substring(0, end).split('\n').length - 1;
+    
+    if (start !== end && text.charAt(end - 1) === '\n') {
+      linhaFim = Math.max(linhaInicio, linhaFim - 1);
+    }
+
+    let changed = false;
+    for (let i = linhaInicio; i <= Math.min(linhaFim, state.fontes.length - 1); i++) {
+      state.fontes[i] = val;
+      changed = true;
+    }
+    if (changed) renderPreview();
+  };
+
   // Controle de Fonte
   elements.fontSizeInput.addEventListener("change", () => {
     let val = parseInt(elements.fontSizeInput.value) || 25;
     if (val < 10) val = 10;
     if (val > 100) val = 100;
     elements.fontSizeInput.value = val;
-
-    if (state.fontes.length > 0 && state.linhaAtiva < state.fontes.length) {
-      state.fontes[state.linhaAtiva] = val;
-      renderPreview();
-    }
+    aplicarFonteNasLinhasSelecionadas(val);
   });
 
   elements.fontSizeInput.addEventListener("input", () => {
     let val = parseInt(elements.fontSizeInput.value);
     if (val >= 10 && val <= 100) {
-      if (state.fontes.length > 0 && state.linhaAtiva < state.fontes.length) {
-        state.fontes[state.linhaAtiva] = val;
-        renderPreview();
-      }
+      aplicarFonteNasLinhasSelecionadas(val);
     }
   });
 
@@ -340,10 +362,7 @@ function setupEventListeners() {
     if (val > 10) {
       val--;
       elements.fontSizeInput.value = val;
-      if (state.fontes.length > 0 && state.linhaAtiva < state.fontes.length) {
-        state.fontes[state.linhaAtiva] = val;
-        renderPreview();
-      }
+      aplicarFonteNasLinhasSelecionadas(val);
     }
   });
 
@@ -352,10 +371,7 @@ function setupEventListeners() {
     if (val < 100) {
       val++;
       elements.fontSizeInput.value = val;
-      if (state.fontes.length > 0 && state.linhaAtiva < state.fontes.length) {
-        state.fontes[state.linhaAtiva] = val;
-        renderPreview();
-      }
+      aplicarFonteNasLinhasSelecionadas(val);
     }
   });
 
@@ -390,6 +406,7 @@ function setupEventListeners() {
   // Escuridão / Contraste
   elements.darknessRange.addEventListener("input", (e) => {
     elements.darknessVal.innerText = e.target.value;
+    localStorage.setItem("foxsenior_darkness", e.target.value);
   });
 
   // Sobrescrever '_' ao digitar (Modo preenchimento de template)
